@@ -12,18 +12,16 @@ public class Spawner : MonoBehaviour
     private GameObject enemyPrefab { get { return _enemyPrefab; } }
     private void Start()
     {
-        
+        InvokeRepeating("Spawn", 0, spawnTime);
     }
-
+    private void Spawn()
+    {
+        Vector3 randomPos = transform.position;
+        randomPos.x += Random.Range(-3.0f, 3.0f);
+        Instantiate(enemyPrefab, randomPos, transform.rotation);
+    }
     private void Update()
     {
-        currentSpawnTime += Time.deltaTime;
-        if(currentSpawnTime >= spawnTime)
-        {
-            currentSpawnTime = 0;
-            Vector3 randomPos = transform.position;
-            randomPos.x += Random.Range(-3.0f, 3.0f);
-            Instantiate(enemyPrefab, transform.position, transform.rotation);
-        }
+        
     }
 }

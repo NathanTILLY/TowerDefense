@@ -11,6 +11,11 @@ public class Tower : MonoBehaviour
     public float _fireRate = 0.1f;
     private float fireRate { get { return _fireRate; } set { _fireRate = value; } }
 
+    //value in gold
+    public int _value = 10;
+    private int value {  get { return _value; } }
+
+    //handles fire rate
     private float currentFireRate { get; set; } = 0;
 
     public bool canShoot { get; set; } = true;
@@ -41,6 +46,7 @@ public class Tower : MonoBehaviour
                 canShoot = false;
                 Destroy(enemies[0].gameObject);
                 enemies.RemoveAt(0);
+                GameManager.instance.AddGold(1);
             }
             
         } 
@@ -53,24 +59,22 @@ public class Tower : MonoBehaviour
         {
             return;
         }
+
+        if(GameManager.instance.gold < value)
+        {
+            return;
+        }
         Instantiate(upgrade, transform.position, transform.rotation);
+        GameManager.instance.AddGold(-10);
         Destroy(gameObject);
 
     }
-    private void OnTriggerEnter(Collider other)
+   public void AddEnemy(Enemy enemy)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if(enemy != null)
-        {
-            enemies.Add(enemy);
-        }
+        enemies.Add(enemy);
     }
-    private void OnTriggerExit(Collider other)
+    public void RemoveEnemy(Enemy enemy)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            enemies.Remove(enemy);
-        }
+        enemies.Remove(enemy);
     }
 }
